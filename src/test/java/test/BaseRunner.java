@@ -16,7 +16,8 @@ public class BaseRunner {
     @Before
     public void setUp() {
         driver = getDriver();
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+        driver.manage().timeouts().setScriptTimeout(100, TimeUnit.SECONDS);
     }
 
     @After
