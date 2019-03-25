@@ -5,6 +5,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.opera.OperaDriver;
 
 
 public enum  BrowserFactory {
@@ -32,6 +33,12 @@ public enum  BrowserFactory {
             FirefoxOptions options = new FirefoxOptions();
             options.addPreference("dom.webnotifications.enabled", false);
             return new FirefoxDriver(options);
+        }
+    },
+    opera {
+        public WebDriver create()
+        {
+            return new OperaDriver();
         }
     };
 

@@ -30,6 +30,8 @@
 
 4. Скачайте и установите PATH для [GeckoDriver (драйвер Firefox)](https://github.com/mozilla/geckodriver/)
 
+5. Скачайте и установите PATH для [OperaDriver (драйвер Opera)](https://github.com/operasoftware/operachromiumdriver/releases)
+
 <h2>Запуск</h2>
 
 Для запуска всех тестов со стандартным браузером Chrome в коммандной строке выполните команду 
@@ -39,13 +41,7 @@
 
 2. -Dbrowser=(*имя_браузера*) verify 
 
-Возможен выбор из chrome, chrome_invisible, firefox
-
-Для запуска отдельных тестов используйте ключ 
-
-3. -Dtest=(*имя_теста*)
-
-Имена тестов можно посмотреть выше.
+Возможен выбор из chrome, chrome_invisible, firefox, opera
 
 <h3>Многопоток и многопроцессорность</h3>
 
