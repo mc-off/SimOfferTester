@@ -7,17 +7,24 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.opera.OperaDriver;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public enum  BrowserFactory {
     chrome {
-        public WebDriver create() {
+        public WebDriver create(String path) {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--disable-notifications");
-            return  new ChromeDriver(options);
+            Map<String, Object> preferences = new HashMap<>();
+            preferences.put("download.default_directory", path);
+            preferences.put("plugins.always_open_pdf_externally", true);
+            options.setExperimentalOption("prefs", preferences);
+            return new ChromeDriver(options);
         }
     },
     chrome_invisible {
-        public WebDriver create() {
+        public WebDriver create(String path) {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--disable-notifications");
             options.addArguments("--headless");
@@ -25,7 +32,7 @@ public enum  BrowserFactory {
         }
     },
     firefox {
-        public WebDriver create() {
+        public WebDriver create(String path) {
             //Disable login to console and redirect log to an external file
             System.setProperty(FirefoxDriver.SystemProperty.DRIVER_USE_MARIONETTE, "true");
             System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "./src/test/java/log");
@@ -36,13 +43,13 @@ public enum  BrowserFactory {
         }
     },
     opera {
-        public WebDriver create()
+        public WebDriver create(String path)
         {
             return new OperaDriver();
         }
     };
 
-    public WebDriver create() {
+    public WebDriver create(String path) {
         return null;
     }
 }

@@ -32,7 +32,7 @@
                     <!--<parallel>all</parallel>-->
 
                     <!--макисмальное число процессов-->
-                    <forkCount>2</forkCount>
+                    <forkCount>1</forkCount>
 
                     <!--признак возможности переиспользования потока-->
                     <reuseForks>true</reuseForks>
@@ -40,7 +40,7 @@
                     <!--соотношение потоков на cpu (Default true)-->
                     <perCoreThreadCount>false</perCoreThreadCount>
                     <!--макисмальное число потоков-->
-                    <threadCount>2</threadCount>
+                    <threadCount>1</threadCount>
 
                     <!--if parallel All = threadCount, classes = threadCountClasses, methods = threadCountMethods-->
                     <!--<useUnlimitedThreads>true</useUnlimitedThreads>-->

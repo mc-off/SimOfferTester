@@ -3,6 +3,7 @@
 *.xls
 *.pdf
 log
+*.log
 
 #Intellij IDEA
 
