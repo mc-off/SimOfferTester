@@ -16,11 +16,11 @@ import java.util.stream.Stream;
 
 public class TestList extends BaseRunner{
 
-
+private static final TINKOFF_SIM_TARRIFS_PAGE="https://www.tinkoff.ru/mobile-operator/tariffs/";
     //CSS rewrite
     @Test
     public void firstTest(){
-        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
+        driver.get(TINKOFF_SIM_TARRIFS_PAGE);
 
         textInput.sendKeys(driver.findElement(By.cssSelector("input[name='fio']")),"Иван Иван Иван");
         if (!textInput.getElementString(driver.findElement
@@ -45,7 +45,7 @@ public class TestList extends BaseRunner{
 
     @Test
     public void testRegionSelect() {
-        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
+        driver.get(TINKOFF_SIM_TARRIFS_PAGE);
         driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Да'])[1]/following::span[1]")).click();
         driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Выберите регион'])[1]/following::input[1]")).click();
         driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Город'])[1]/following::div[5]")).click();
@@ -53,7 +53,7 @@ public class TestList extends BaseRunner{
 
     @Test
     public void testFioHint() {
-        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
+        driver.get(TINKOFF_SIM_TARRIFS_PAGE);
         textInput.sendKeys(driver.findElement
                         (By.cssSelector("input[name='fio'")),Keys.chord(Keys.ENTER));
 
@@ -69,7 +69,7 @@ public class TestList extends BaseRunner{
 
     @Test
     public void testPhoneHint() {
-        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
+        driver.get(TINKOFF_SIM_TARRIFS_PAGE);
         textInput.sendKeys(driver.findElement
                 (By.cssSelector("input[name='phone_mobile'")),Keys.chord(Keys.ENTER));
 
@@ -85,7 +85,7 @@ public class TestList extends BaseRunner{
 
     @Test
     public void testEmailHint() {
-        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
+        driver.get(TINKOFF_SIM_TARRIFS_PAGE);
 
         textInput.sendKeys(driver.findElement
                 (By.cssSelector("input[name='email'")),"gg" + Keys.chord(Keys.ENTER));
@@ -128,7 +128,7 @@ public class TestList extends BaseRunner{
 
             driver.switchTo().window(tabs.get(1));
 
-            driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
+            driver.get(TINKOFF_SIM_TARRIFS_PAGE);
 
             if ("Тарифы Тинькофф Мобайла".equals(driver.getTitle())) {
 
@@ -138,7 +138,7 @@ public class TestList extends BaseRunner{
 
                 driver.switchTo().window(tabs.get(1));
 
-                if (!"https://www.tinkoff.ru/mobile-operator/tariffs/".equals(driver.getCurrentUrl())) {
+                if (!TINKOFF_SIM_TARRIFS_PAGE.equals(driver.getCurrentUrl())) {
                     fail("Urls aren't equal");
                 }
             }
@@ -153,7 +153,7 @@ public class TestList extends BaseRunner{
     @Test
 
     public void regionChange(){
-        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
+        driver.get(TINKOFF_SIM_TARRIFS_PAGE);
 
         if (xpath("//div[contains(@class,'MvnoRegionConfirmation__title')]")
                 .isDisplayed())
@@ -178,7 +178,7 @@ public class TestList extends BaseRunner{
         String regionName = xpath("//div[contains(@class,'MvnoRegionConfirmation__title')]")
                 .getText();
 
-        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
+        driver.get(TINKOFF_SIM_TARRIFS_PAGE);
 
         String newRegionName = xpath("//div[contains(@class,'MvnoRegionConfirmation__title')]")
                 .getText();
@@ -278,7 +278,7 @@ public class TestList extends BaseRunner{
     @Test
     public void zeroTariffDelivery() {
 
-        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
+        driver.get(TINKOFF_SIM_TARRIFS_PAGE);
 
         if (xpath("//div[contains(@class,'MvnoRegionConfirmation__title')]").isDisplayed())
         {
