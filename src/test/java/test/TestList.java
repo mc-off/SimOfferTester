@@ -2,21 +2,13 @@ package test;
 
 
 import org.junit.*;
-import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.stream.Stream;
+import pages.GoogleMainPage;
+import pages.GoogleResultPage;
+import pages.TinkoffSimOfferPage;
 
 
 public class TestList extends BaseRunner{
-
-
+/*
     //CSS rewrite
     @Test
     public void firstTest(){
@@ -43,30 +35,21 @@ public class TestList extends BaseRunner{
         driver.findElement(By.cssSelector("svg.ui-icon__svg-wrapper")).click();
     }
 
-    @Test
-    public void testRegionSelect() {
-        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
-        driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Да'])[1]/following::span[1]")).click();
-        driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Выберите регион'])[1]/following::input[1]")).click();
-        driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Город'])[1]/following::div[5]")).click();
-    }
+ */
 
     @Test
     public void testFioHint() {
-        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
-        textInput.sendKeys(driver.findElement
-                        (By.cssSelector("input[name='fio'")),Keys.chord(Keys.ENTER));
+        TinkoffSimOfferPage tinkoffSimOfferPage = app.tinkoffSimOfferPage;
 
-        if (xpath("//div[contains(@class, 'app-form-step__fio-field')]" +
-                "//div[contains(@class, 'ui-form-field-error-message')]").getText()
-                .equals("Укажите ваше ФИО")){
-            driver.close();
-        }
-        else {
-            fail("Hints do not equal");
-        }
+        tinkoffSimOfferPage.open();
+
+        tinkoffSimOfferPage.printFioField("");
+
+        tinkoffSimOfferPage.hintFioEquality("Укажите ваше ФИО");
+
+        tinkoffSimOfferPage.closeCurrentTab();
     }
-
+/*
     @Test
     public void testPhoneHint() {
         driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
@@ -372,4 +355,5 @@ public class TestList extends BaseRunner{
         }
         return count;
     }
+    */
 }
