@@ -1,41 +1,30 @@
 package app;
 
-import modules.CheckBox;
-import modules.Select;
-import modules.TextInput;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import pages.GoogleMainPage;
 import pages.GoogleResultPage;
+import pages.TinkoffSimDocumentationPage;
 import pages.TinkoffSimOfferPage;
 import test.BrowsersFactory;
-
-import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
 
 
 
 public class Application {
 
-
-    Logger logger = LoggerFactory.getLogger(Application.class);
-    private WebDriverWait wait;
-    private WebDriver driver;
+    public WebDriverWait wait;
+    public WebDriver driver;
     public GoogleMainPage googleMainPage;
     public GoogleResultPage googleResults;
     public TinkoffSimOfferPage tinkoffSimOfferPage;
-    CheckBox checkBox;
-    Select select;
-    TextInput textInput;
-    public final String browserName = System.getProperty("browser") == null ? "chrome" : System.getProperty("browser");
-    String downloadPath = System.getProperty("path");
+    public TinkoffSimDocumentationPage tinkoffSimDocumentationPage;
+    private final String browserName = System.getProperty("browser") == null ? "chrome" : System.getProperty("browser");
+    public String downloadPath = System.getProperty("path");
 
 
-    public Application() throws MalformedURLException {
-        initialize();
+    public Application(){
         getDownloadPath();
         //driver
         driver = new EventFiringWebDriver(getDriver());
@@ -48,6 +37,7 @@ public class Application {
         googleMainPage = new GoogleMainPage(driver);
         googleResults = new GoogleResultPage(driver);
         tinkoffSimOfferPage = new TinkoffSimOfferPage(driver);
+        tinkoffSimDocumentationPage = new TinkoffSimDocumentationPage(driver);
     }
 
     public void quit() {
@@ -67,13 +57,8 @@ public class Application {
             System.setProperty("path", downloadPath);
         }
     }
-    private void initialize() {
-        checkBox = new CheckBox();
-        select = new Select();
-        textInput = new TextInput();
-    }
 
-    private WebDriver getDriver() throws MalformedURLException {
+    private WebDriver getDriver(){
         return BrowsersFactory.buildDriver(browserName, downloadPath);
     }
 

@@ -15,7 +15,6 @@ import org.openqa.selenium.support.events.AbstractWebDriverEventListener;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -51,7 +50,7 @@ public class BrowsersFactory {
             logger.error(file.getAbsolutePath());
         }
     }
-    public static WebDriver buildDriver(String browserName, String path) throws MalformedURLException {
+    public static WebDriver buildDriver(String browserName, String path) {
         switch (browserName) {
             case "chrome_invisible":
                 ChromeOptions chromeInvisibleOpt = new ChromeOptions();
@@ -79,6 +78,7 @@ public class BrowsersFactory {
                 ChromeOptions options = new ChromeOptions();
                 options.addArguments("--disable-notifications");
                 Map<String, Object> preferencesMap = new HashMap<>();
+                preferencesMap.put("download.default_directory", path);
                 preferencesMap.put("plugins.always_open_pdf_externally", true);
                 options.setExperimentalOption("prefs", preferencesMap);
                 LoggingPreferences logPrefs = new LoggingPreferences();

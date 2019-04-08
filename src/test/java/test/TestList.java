@@ -1,42 +1,17 @@
 package test;
 
 
+import functions.Counter;
 import org.junit.*;
 import pages.GoogleMainPage;
 import pages.GoogleResultPage;
+import pages.TinkoffSimDocumentationPage;
 import pages.TinkoffSimOfferPage;
 
+import java.io.IOException;
 
-public class TestList extends BaseRunner{
-/*
-    //CSS rewrite
-    @Test
-    public void firstTest(){
-        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
 
-        textInput.sendKeys(driver.findElement(By.cssSelector("input[name='fio']")),"Иван Иван Иван");
-        if (!textInput.getElementString(driver.findElement
-                (By.cssSelector("input[name='fio']"))).toLowerCase()
-                .equals("Иван Иван Иван".toLowerCase()))
-            fail("Fio field is invalid");
-
-        textInput.sendKeys(driver.findElement(By.cssSelector("input[name='phone_mobile'")),"(900) 800-70-00");
-        if (!textInput.getElementString(driver.findElement
-                (By.cssSelector("input[name='phone_mobile'"))).toLowerCase()
-                .equals("+7(900) 800-70-00".toLowerCase()))
-            fail("Phone number field is invalid");
-
-        textInput.sendKeys( driver.findElement(By.cssSelector("input[name='email'")),"ivan@domain.com");
-        if (!textInput.getElementString(driver.findElement
-                (By.cssSelector("input[name='email'"))).toLowerCase()
-                .equals("ivan@domain.com".toLowerCase()))
-            fail("Email field is invalid");
-
-        driver.findElement(By.cssSelector("svg.ui-icon__svg-wrapper")).click();
-    }
-
- */
-
+public class TestList extends BaseRunner {
     @Test
     public void testFioHint() {
         TinkoffSimOfferPage tinkoffSimOfferPage = app.tinkoffSimOfferPage;
@@ -49,311 +24,163 @@ public class TestList extends BaseRunner{
 
         tinkoffSimOfferPage.closeCurrentTab();
     }
-/*
+
     @Test
     public void testPhoneHint() {
-        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
-        textInput.sendKeys(driver.findElement
-                (By.cssSelector("input[name='phone_mobile'")),Keys.chord(Keys.ENTER));
+        TinkoffSimOfferPage tinkoffSimOfferPage = app.tinkoffSimOfferPage;
 
-        if (xpath("//div[contains(@class, 'ui-form__row ui-form__row_tel')]" +
-                "//div[contains(@class, 'ui-form-field-error-message')]").getText()
-                .equals("Необходимо указать номер телефона")){
-            driver.close();
-        }
-        else {
-            fail("Hints do not equal");
-        }
+        tinkoffSimOfferPage.open();
+
+        tinkoffSimOfferPage.printPhoneField("");
+
+        tinkoffSimOfferPage.hintPhoneEquality("Необходимо указать номер телефона");
+
+        tinkoffSimOfferPage.closeCurrentTab();
     }
 
     @Test
     public void testEmailHint() {
-        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
 
-        textInput.sendKeys(driver.findElement
-                (By.cssSelector("input[name='email'")),"gg" + Keys.chord(Keys.ENTER));
+        TinkoffSimOfferPage tinkoffSimOfferPage = app.tinkoffSimOfferPage;
 
-        if (xpath("//div[contains(@class,'ui-form__row_dropdownSuggest')]" +
-                "//div[contains(@class, 'ui-form-field-error-message')]").getText()
-                .equals("Введите корректный адрес эл. почты")){
-            driver.close();
-        }
-        else {
-            fail("Hints do not equal");
-        }
-    }
-    @Test
-    public void testGoogleSearch(){
+        tinkoffSimOfferPage.open();
 
-        driver.get("https://www.google.ru/");
+        tinkoffSimOfferPage.printEmailField("godEmail");
 
-        WebElement searchElement = xpath("//input[contains(@title,'Поиск')]");
+        tinkoffSimOfferPage.hintEmailEquality("Введите корректный адрес эл. почты");
 
-        textInput.sendKeys(searchElement, "тинькофф мобайл");
+        tinkoffSimOfferPage.closeCurrentTab();
 
-        searchElement.click();
-
-        new WebDriverWait(driver, 10)
-                .until(ExpectedConditions
-                        .visibilityOf(xpath("//ul[contains(@role,'listbox')]" +
-                                "//span[.='тинькофф мобайл тарифы']")))
-                .click();
-
-
-        if (new WebDriverWait(driver, 100)
-                .until(ExpectedConditions.elementToBeClickable(driver.findElement(By
-                        .xpath("//h3[contains(text(),'Тарифы Тинькофф Мобайла')]"))))
-                .isDisplayed())
-        {
-            ((JavascriptExecutor)driver).executeScript("window.open()");
-
-            ArrayList<String> tabs = new ArrayList<> (driver.getWindowHandles());
-
-            driver.switchTo().window(tabs.get(1));
-
-            driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
-
-            if ("Тарифы Тинькофф Мобайла".equals(driver.getTitle())) {
-
-                driver.switchTo().window(tabs.get(0));
-
-                driver.close();
-
-                driver.switchTo().window(tabs.get(1));
-
-                if (!"https://www.tinkoff.ru/mobile-operator/tariffs/".equals(driver.getCurrentUrl())) {
-                    fail("Urls aren't equal");
-                }
-            }
-            else
-                fail("Title is incorrect");
-        }
-        else fail("Page doesn't show in Google");
-
-        driver.close();
     }
 
     @Test
+    public void testGoogleSearch() {
 
-    public void regionChange(){
-        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
+        GoogleMainPage googleMainPage = app.googleMainPage;
+        googleMainPage.open();
 
-        if (xpath("//div[contains(@class,'MvnoRegionConfirmation__title')]")
-                .isDisplayed())
-        {
-            if (xpath("//div[contains(@class,'MvnoRegionConfirmation__title')]" +
-                    "//span[contains(@class,'MvnoRegionConfirmation__regionName')]")
-                    .getText()
-                    .equals("Москва и Московская область?")) {
-                xpath("//span[contains(text(),'Да')]").click();
+        googleMainPage.openSearchResultsPageByRequest("тинькофф мобайл тарифы");
+
+        GoogleResultPage googleResultPage = app.googleResults;
+        googleResultPage.clickSearchResultsByLinkContains("https://www.tinkoff.ru/mobile-operator/tariffs/");
+
+        TinkoffSimOfferPage tinkoffSimOfferPage = app.tinkoffSimOfferPage;
+
+        tinkoffSimOfferPage.switchToWindow("Тарифы Тинькофф Мобайла");
+
+        tinkoffSimOfferPage.testForLoading();
+
+        tinkoffSimOfferPage.isLoadedByTitleContains("Тарифы Тинькофф Мобайла");
+
+        tinkoffSimOfferPage.switchToWindow("тинькофф мобайл тарифы - Поиск в Google");
+
+        googleResultPage.closeCurrentTab();
+
+        if (tinkoffSimOfferPage.isLoadedByTitleContains("Тарифы Тинькофф Мобайла")) {
+
+            if (tinkoffSimOfferPage.isLoadedByUrlContains("https://www.tinkoff.ru/mobile-operator/tariffs/")) {
+                tinkoffSimOfferPage.closeCurrentTab();
             }
-            else {
-                xpath("//span[contains(text(),'Нет')]").click();
-                xpath("//div[contains(@class,'MobileOperatorRegionsPopup__listPart')]" +
-                        "//div[contains(text(),'Москва')]")
-                        .click();
-            }
         }
-        else {
-            fail();
-        }
+    }
 
-        String regionName = xpath("//div[contains(@class,'MvnoRegionConfirmation__title')]")
-                .getText();
 
-        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
+    @Test
 
-        String newRegionName = xpath("//div[contains(@class,'MvnoRegionConfirmation__title')]")
-                .getText();
+    public void regionChange() {
+        TinkoffSimOfferPage tinkoffSimOfferPage = app.tinkoffSimOfferPage;
 
-        if (!regionName.equals(newRegionName)) {
-            fail("Reload region isn't equal to old region");
+        tinkoffSimOfferPage.open();
+
+        if (tinkoffSimOfferPage.isFirstRegionMoscow()) {
+            tinkoffSimOfferPage.clickToFirstRegionHint("Да");
+        } else {
+            tinkoffSimOfferPage.clickToFirstRegionHint("Нет");
+            tinkoffSimOfferPage.selectRegionFromList("Москва");
         }
 
-        String moscowDefault = xpath("//div[@data-qa-file='MobileOperatorProductCalculator']" +
-                "//h3")
-                .getText();
+        tinkoffSimOfferPage.open();
 
-        System.out.println(moscowDefault);
+        if (tinkoffSimOfferPage.isRegionEqualToTestRegion("Москва")) {
+            String moscowDefault = tinkoffSimOfferPage.getTariffPrice();
 
-        String pathString = "Безлимитный интернет";
+            tinkoffSimOfferPage.setInternetProperty("Безлимитный интернет");
+            tinkoffSimOfferPage.setPhoneProperty("Безлимитные минуты");
+            tinkoffSimOfferPage.setCheckBoxEnabled("Режим модема");
+            tinkoffSimOfferPage.setCheckBoxEnabled("Безлимитные СМС");
 
-        select.setWebElement(xpath("//span[.='Интернет']"));
-        select.chooseVariantFromList(pathString).click();
-        if (!select.takeListValue(xpath("//span[contains(@class,'ui-select__title-flex-text')" +
-                "and contains(text(),'"+pathString+"')]"))
-                .equals(pathString))
-            fail("Internet value doesn't apply");
+            String moscowMax = tinkoffSimOfferPage.getTariffPrice();
 
+            tinkoffSimOfferPage.openRegionSelectList();
+            tinkoffSimOfferPage.selectRegionFromList("Краснодарский");
 
-        pathString = "Безлимитные минуты";
-        select.setWebElement(xpath("//span[.='Звонки']"));
-        select.chooseVariantFromList(pathString).click();
-        if (!select.takeListValue(xpath("//span[contains(@class,'ui-select__title-flex-text')" +
-                "and contains(text(),'"+pathString+"')]"))
-                .equals(pathString))
-            fail("Call minutes value doesn't apply");
+            String krasnodarDefault = tinkoffSimOfferPage.getTariffPrice();
 
-        checkBox.setInactive(xpath("//div[contains(@class,'Checkbox')]"),"Режим модема");
-        checkBox.setInactive(xpath("//div[contains(@class,'Checkbox')]"),"Безлимитные СМС");
+            tinkoffSimOfferPage.setInternetProperty("Безлимитный интернет");
+            tinkoffSimOfferPage.setPhoneProperty("Безлимитные минуты");
+            tinkoffSimOfferPage.setCheckBoxEnabled("Режим модема");
+            tinkoffSimOfferPage.setCheckBoxEnabled("Безлимитные СМС");
 
-        String moscowMax = xpath("//div[@data-qa-file='MobileOperatorProductCalculator']" +
-                "//h3")
-                .getText();
+            String krasnodarMax = tinkoffSimOfferPage.getTariffPrice();
 
-        System.out.println(moscowMax);
-
-        xpath("//div[contains(@class,'MvnoRegionConfirmation__title')]").click();
-
-        xpath("//div[contains(@class,'MobileOperatorRegionsPopup__listPart')]" +
-                "//div[contains(text(),'Краснодарский')]")
-                .click();
-
-        String krasnodarDefault = xpath("//div[@data-qa-file='MobileOperatorProductCalculator']" +
-                "//h3")
-                .getText();
-
-        System.out.println(krasnodarDefault);
-
-        pathString = "Безлимитный интернет";
-
-        select.setWebElement(xpath("//span[.='Интернет']"));
-        select.chooseVariantFromList(pathString).click();
-        if (!select.takeListValue(xpath("//span[contains(@class,'ui-select__title-flex-text')" +
-                "and contains(text(),'"+pathString+"')]"))
-                .equals(pathString))
-            fail("Internet value doesn't apply");
-
-
-        pathString = "Безлимитные минуты";
-
-        select.setWebElement(xpath("//span[.='Звонки']"));
-        select.chooseVariantFromList(pathString).click();
-        if (!select.takeListValue(xpath("//span[contains(@class,'ui-select__title-flex-text')" +
-                "and contains(text(),'"+pathString+"')]"))
-                .equals(pathString))
-            fail("Call minutes value doesn't apply");
-
-        checkBox.setInactive(xpath("//div[contains(@class,'Checkbox')]"),"Режим модема");
-        checkBox.setInactive(xpath("//div[contains(@class,'Checkbox')]"),"Безлимитные СМС");
-
-        String krasnodarMax = xpath("//div[@data-qa-file='MobileOperatorProductCalculator']//h3").getText();
-
-        System.out.println(krasnodarMax);
-
-        if (moscowDefault.equals(krasnodarDefault)){
-            fail("Default prices are equal");
+            if ((!moscowDefault.equals(krasnodarDefault)) && (moscowMax.equals(krasnodarMax)))
+                tinkoffSimOfferPage.closeCurrentTab();
         }
-        else {
-            System.out.println("Success");
-        }
-
-        if (moscowMax.equals(krasnodarMax)){
-            System.out.println("Success");
-        }
-        else {
-            fail("Max prices not equal");
-        }
-
-        driver.close();
     }
 
     @Test
     public void zeroTariffDelivery() {
+        TinkoffSimOfferPage tinkoffSimOfferPage = app.tinkoffSimOfferPage;
+        tinkoffSimOfferPage.open();
 
-        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
-
-        if (xpath("//div[contains(@class,'MvnoRegionConfirmation__title')]").isDisplayed())
-        {
-            if (xpath("//div[contains(@class,'MvnoRegionConfirmation__title')]" +
-                    "//span[contains(@class,'MvnoRegionConfirmation__regionName')]")
-                    .getText()
-                    .equals("Москва и Московская область?")) {
-                xpath("//span[contains(text(),'Да')]").click();
-            }
-            else {
-                xpath("//span[contains(text(),'Нет')]").click();
-                xpath("//div[contains(@class,'MobileOperatorRegionsPopup__listPart')]" +
-                        "//div[contains(text(),'Москва')]")
-                        .click();
-            }
-        }
-        else {
-            fail();
+        if (tinkoffSimOfferPage.isFirstRegionMoscow()) {
+            tinkoffSimOfferPage.clickToFirstRegionHint("Да");
+        } else {
+            tinkoffSimOfferPage.clickToFirstRegionHint("Нет");
+            tinkoffSimOfferPage.selectRegionFromList("Москва");
         }
 
-        String pathString = "0 ГБ";
-        select.setWebElement(xpath("//span[.='Интернет']"));
-        select.chooseVariantFromList(pathString).click();
-        if (!select.takeListValue(xpath("//span[contains(@class,'ui-select__title-flex-text')" +
-                "and contains(text(),'"+pathString+"')]"))
-                .equals(pathString))
-            fail("Internet value doesn't apply");
+        tinkoffSimOfferPage.setInternetProperty("0 ГБ");
+        tinkoffSimOfferPage.setPhoneProperty("0 минут");
 
+        tinkoffSimOfferPage.setCheckBoxDisabled("Мессенджеры");
+        tinkoffSimOfferPage.setCheckBoxDisabled("Социальные сети");
 
-        pathString = "0 минут";
-        select.setWebElement(xpath("//span[.='Звонки']"));
-        select.chooseVariantFromList(pathString).click();
-        if (!select.takeListValue(xpath("//span[contains(@class,'ui-select__title-flex-text')" +
-                "and contains(text(),'"+pathString+"')]"))
-                .equals(pathString))
-            fail("Call minutes value doesn't apply");
+        tinkoffSimOfferPage.printFioField("Иван Иван Иван");
+        tinkoffSimOfferPage.printPhoneField("(900)800-70-00");
+        tinkoffSimOfferPage.printEmailField("ivan@domain.com");
 
-        checkBox.setInactive(xpath("//div[contains(@class,'Checkbox')]"),"Мессенджеры");
+        tinkoffSimOfferPage.clickOfferButton();
 
-        checkBox.setInactive(xpath("//div[contains(@class,'Checkbox')]"),"Социальные сети");
-
-        textInput.sendKeys(driver.findElement(By.name("fio")),"Иван Иван Иван");
-        textInput.sendKeys(driver.findElement(By.name("phone_mobile")),"(900)800-70-00");
-        textInput.sendKeys( driver.findElement(By.name("email")),"ivan@domain.com");
-
-        new WebDriverWait(driver, 10)
-                .until(ExpectedConditions
-                        .elementToBeClickable(xpath("//button[contains(@class,'Button__button')]"))).click();
-
-        textInput.sendKeys( driver.findElement(By.name("postal_code")),"108825");
-
+        tinkoffSimOfferPage.printPostcodeField("108825");
         //Символ '/' точка, всё нормально
         //система обычный символ '.' читает как 'ю' при эспорте в поле
         //раскладка дело не меняла, комбинация alt+46 тоже
-        textInput.sendKeys( driver.findElement(By.name("area")),"г/ Москва");
+        tinkoffSimOfferPage.printAreaField("г/ Москва");
+        tinkoffSimOfferPage.printStreetField("ул Дунайская");
+        tinkoffSimOfferPage.printBuildingField("1");
 
-        textInput.sendKeys( driver.findElement(By.name("street")),"ул Дунайская");
-
-        textInput.sendKeys( driver.findElement(By.name("building")),"1");
-
-        if (new WebDriverWait(driver,10)
-                .until(ExpectedConditions
-                        .elementToBeClickable(xpath("//div[contains(@class,'UIAppointmentForm__button')]"))).isDisplayed())
-            driver.close();
-        else
-            fail("Final button not clickable");
+        if (tinkoffSimOfferPage.isOrderButtonClickabe())
+            tinkoffSimOfferPage.closeCurrentTab();
     }
+
     @Test
-    public void fileDownload() throws  Exception
-    {
-        driver.get("https://www.tinkoff.ru/mobile-operator/documents/");
-        long numberOfFilesBefore = numberOfFilesInDirectory(downloadPath);
-        xpath("//a[contains(@href,'first-month-free')]").click();
-        Thread.sleep(5000);
-        long numberOfFilesAfter = numberOfFilesInDirectory(downloadPath);
-        if (numberOfFilesAfter==numberOfFilesBefore)
-            fail("Do not download");
-        else
-            driver.close();
-    }
+    public void fileDownload() {
+        try {
+            TinkoffSimDocumentationPage tinkoffSimDocumentationPage = app.tinkoffSimDocumentationPage;
+            Counter counter = new Counter();
+            tinkoffSimDocumentationPage.open();
+            long numberOfFilesBefore = counter.numberOfFilesInDirectory(app.downloadPath);
 
-    private long numberOfFilesInDirectory(String path) {
-        long count;
-        try (Stream<Path> files = Files.list(Paths.get(path))) {
-            count = files.count();
-        }
-        catch (IOException e)
-        {
+            tinkoffSimDocumentationPage.downloadAndWaitTillFileDownloading();
+
+            long numberOfFilesAfter = counter.numberOfFilesInDirectory(app.downloadPath);
+            if (numberOfFilesAfter == numberOfFilesBefore)
+                tinkoffSimDocumentationPage.closeCurrentTab();
+        } catch (IOException e) {
             e.printStackTrace();
-            return 0;
+        } catch (InterruptedException e){
+            e.printStackTrace();
         }
-        return count;
     }
-    */
 }

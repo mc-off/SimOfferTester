@@ -7,7 +7,7 @@ public class CheckBox {
     public void setActive(WebElement webElement, String testString) {
         WebElement checkBox = webElement
                 .findElement(By.xpath("//label[contains(text(),'" + testString +"')]"));
-        if (!checkBox.isEnabled()){
+        if (checkBox.isEnabled()){
             checkBox.click();
         }
     }

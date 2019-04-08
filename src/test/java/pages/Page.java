@@ -13,8 +13,8 @@ public class Page {
 
     Logger logger = LoggerFactory.getLogger(Page.class);
 
-    protected WebDriver driver;
-    protected WebDriverWait wait;
+    WebDriver driver;
+    WebDriverWait wait;
 
     public Page(WebDriver driver) {
         this.driver = driver;
@@ -22,7 +22,12 @@ public class Page {
     }
 
     public boolean isLoadedByTitleContains(String substring) {
-        wait.until(d -> d.getTitle().contains(substring));
+        wait.until(d -> driver.getTitle().contains(substring));
+        return true;
+    }
+
+    public boolean isLoadedByUrlContains(String substring) {
+        wait.until(d -> driver.getCurrentUrl().contains(substring));
         return true;
     }
 
@@ -32,23 +37,13 @@ public class Page {
             for (String title : driver.getWindowHandles()) {
                 driver.switchTo().window(title);
                 System.out.println(d.getTitle());
-                check = d.getTitle().equals(windowName);
+                check = d.getTitle().contains(windowName);
             }
             return check;
         });
     }
 
-    public void getPage(String url) {
-        driver.navigate().to(url);
-    }
-
-    //универсальный xpath локатор, вернет все элементы, содержащие текст
-    public List<WebElement> xpathSearcherByText(String searchText) {
-        String xpath = String.format("//*[contains(text(),'%s')]", searchText);
-        return driver.findElements(By.xpath(xpath));
-    }
-
-    WebElement xpath(String response){
+    WebElement xpathWebElement(String response){
         return driver.findElement(By.xpath(response));
     }
 
@@ -56,7 +51,10 @@ public class Page {
         driver.close();
         logger.info("Закрыта активная вкладка");
     }
-
+    public List<WebElement> xpathSearcherByText(String searchText) {
+        String xpath = String.format("//*[contains(text(),'%s')]", searchText);
+        return driver.findElements(By.xpath(xpath));
+    }
 
     public void switchToMainTab(){
         driver.switchTo().window(driver.getWindowHandles().iterator().next());

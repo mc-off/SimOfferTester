@@ -1,28 +1,16 @@
 package test;
 
 import app.Application;
-import modules.CheckBox;
-import modules.Select;
-import modules.TextInput;
 import org.junit.After;
 import org.junit.Before;
 
-
-import java.net.MalformedURLException;
-import java.util.concurrent.TimeUnit;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-
-
 public class BaseRunner {
 
-    public static ThreadLocal<Application> tlApp = new ThreadLocal<>();
-    public Application app;
+    private  static ThreadLocal<Application> tlApp = new ThreadLocal<>();
+    Application app;
 
     @Before
-    public void start() throws MalformedURLException {
+    public void start() {
         if (tlApp.get() != null) {
             app = tlApp.get();
             return;
