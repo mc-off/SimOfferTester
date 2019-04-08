@@ -11,7 +11,6 @@ public class TinkoffSimDocumentationPage extends Page {
     public void open(){
         driver.get("https://www.tinkoff.ru/mobile-operator/documents/");
         logger.info("Перехожу по ссылке https://www.tinkoff.ru/mobile-operator/documents/");
-        isLoadedByTitleContains("documents");
     }
     public void downloadAndWaitTillFileDownloading() throws InterruptedException{
         logger.info("Try to download first file");
