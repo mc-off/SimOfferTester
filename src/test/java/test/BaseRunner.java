@@ -24,7 +24,7 @@ public class BaseRunner {
     /*@After
     public void close(){
         pagesFactory.quit();
-        threadLocalPagesFactory.remove();
+
     }*/
 
     @AfterClass

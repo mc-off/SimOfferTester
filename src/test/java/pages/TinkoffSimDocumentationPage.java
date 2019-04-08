@@ -19,4 +19,10 @@ public class TinkoffSimDocumentationPage extends Page {
         Thread.sleep(5000);
         logger.info("Sleep is over");
     }
+    public void equalityOfFilesInFolder(Long before, Long after){
+        wait
+                .until(d -> {
+                    return (before<after);
+                });
+    }
 }

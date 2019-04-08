@@ -21,8 +21,6 @@ public class TestList extends BaseRunner {
         tinkoffSimOfferPage.printFioField("");
 
         tinkoffSimOfferPage.hintFioEquality("Укажите ваше ФИО");
-
-        tinkoffSimOfferPage.closeCurrentTab();
     }
 
     @Test
@@ -34,8 +32,6 @@ public class TestList extends BaseRunner {
         tinkoffSimOfferPage.printPhoneField("");
 
         tinkoffSimOfferPage.hintPhoneEquality("Необходимо указать номер телефона");
-
-        tinkoffSimOfferPage.closeCurrentTab();
     }
 
     @Test
@@ -48,9 +44,6 @@ public class TestList extends BaseRunner {
         tinkoffSimOfferPage.printEmailField("godEmail");
 
         tinkoffSimOfferPage.hintEmailEquality("Введите корректный адрес эл. почты");
-
-        tinkoffSimOfferPage.closeCurrentTab();
-
     }
 
     @Test
@@ -76,12 +69,9 @@ public class TestList extends BaseRunner {
 
         if (tinkoffSimOfferPage.isLoadedByTitleContains("Тарифы Тинькофф Мобайла")) {
 
-            if (tinkoffSimOfferPage.isLoadedByUrlContains("https://www.tinkoff.ru/mobile-operator/tariffs/")) {
-                tinkoffSimOfferPage.closeCurrentTab();
-            }
+            tinkoffSimOfferPage.isLoadedByUrlContains("https://www.tinkoff.ru/mobile-operator/tariffs/");
         }
     }
-
 
     @Test
 
@@ -90,11 +80,19 @@ public class TestList extends BaseRunner {
 
         tinkoffSimOfferPage.open();
 
-        if (tinkoffSimOfferPage.isFirstRegionMoscow()) {
-            tinkoffSimOfferPage.clickToFirstRegionHint("Да");
-        } else {
-            tinkoffSimOfferPage.clickToFirstRegionHint("Нет");
-            tinkoffSimOfferPage.selectRegionFromList("Москва");
+        if (tinkoffSimOfferPage.isItFirstConnect()) {
+            if (tinkoffSimOfferPage.isFirstRegionMoscow()) {
+                tinkoffSimOfferPage.clickToFirstRegionHint("Да");
+            } else {
+                tinkoffSimOfferPage.clickToFirstRegionHint("Нет");
+                tinkoffSimOfferPage.selectRegionFromList("Москва");
+            }
+        }
+        else{
+            if (tinkoffSimOfferPage.isRegionEqualToTestRegion("Москва")){
+                tinkoffSimOfferPage.openRegionSelectList();
+                tinkoffSimOfferPage.selectRegionFromList("Москва");
+            }
         }
 
         tinkoffSimOfferPage.open();
@@ -121,8 +119,7 @@ public class TestList extends BaseRunner {
 
             String krasnodarMax = tinkoffSimOfferPage.getTariffPrice();
 
-            if ((!moscowDefault.equals(krasnodarDefault)) && (moscowMax.equals(krasnodarMax)))
-                tinkoffSimOfferPage.closeCurrentTab();
+            tinkoffSimOfferPage.equalityOfTariffPrices((!moscowDefault.equals(krasnodarDefault)),(moscowMax.equals(krasnodarMax)));
         }
     }
 
@@ -158,11 +155,10 @@ public class TestList extends BaseRunner {
         tinkoffSimOfferPage.printStreetField("ул Дунайская");
         tinkoffSimOfferPage.printBuildingField("1");
 
-        if (tinkoffSimOfferPage.isOrderButtonClickabe())
-            tinkoffSimOfferPage.closeCurrentTab();
+        tinkoffSimOfferPage.isOrderButtonClickabe();
     }
 
-    @Test
+   @Test
     public void fileDownload() {
         try {
             TinkoffSimDocumentationPage tinkoffSimDocumentationPage = pagesFactory.tinkoffSimDocumentationPage;
@@ -173,8 +169,7 @@ public class TestList extends BaseRunner {
             tinkoffSimDocumentationPage.downloadAndWaitTillFileDownloading();
 
             long numberOfFilesAfter = counter.numberOfFilesInDirectory(pagesFactory.downloadPath);
-            if (numberOfFilesAfter == numberOfFilesBefore)
-                tinkoffSimDocumentationPage.closeCurrentTab();
+            tinkoffSimDocumentationPage.equalityOfFilesInFolder(numberOfFilesBefore,numberOfFilesAfter);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e){

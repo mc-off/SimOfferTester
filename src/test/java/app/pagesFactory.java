@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class pagesFactory {
 
     public WebDriverWait wait;
-    public WebDriver driver;
+    private WebDriver driver;
     public GoogleMainPage googleMainPage;
     public GoogleResultPage googleResults;
     public TinkoffSimOfferPage tinkoffSimOfferPage;

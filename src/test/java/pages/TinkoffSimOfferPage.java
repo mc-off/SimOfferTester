@@ -158,6 +158,18 @@ public class TinkoffSimOfferPage extends Page {
         return xpathWebElement("//div[contains(@class,'MvnoRegionConfirmation__title')]")
                 .getText().contains(testRegion);
     }
+
+    public boolean isItFirstConnect(){
+        logger.info("Тест на первое включене, то есть: сохранена ли локация или нет");
+        try{
+            return  (xpathWebElement("//div[contains(@class,'MvnoRegionConfirmation__title')]" +
+                    "//span[contains(@class,'MvnoRegionConfirmation__regionName')]").isDisplayed());
+        }
+        //Не самое адекватное решение, но пока иного найти не удалось
+        catch (NoSuchElementException e) {
+            return false;
+        }
+    }
     public String getTariffPrice(){
         String price = xpathWebElement("//div[@data-qa-file='MobileOperatorProductCalculator']" +
                 "//h3")
@@ -186,6 +198,13 @@ public class TinkoffSimOfferPage extends Page {
                 "and contains(text(),'"+phoneProperty+"')]"))
                 .equals(phoneProperty))
             logger.error("Не удается установить макс значение в списке выбора минут звонков");
+    }
+
+    public void equalityOfTariffPrices(Boolean firstPair, Boolean secondPair){
+        wait
+                .until(d -> {
+                    return (firstPair==secondPair);
+                });
     }
 
     public void setCheckBoxEnabled(String checkBoxLabel){
