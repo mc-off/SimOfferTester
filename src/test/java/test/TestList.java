@@ -2,25 +2,17 @@ package test;
 
 
 import org.junit.*;
-import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.stream.Stream;
+import pages.GoogleMainPage;
+import pages.GoogleResultPage;
+import pages.TinkoffSimOfferPage;
 
 
 public class TestList extends BaseRunner{
-
-private static final TINKOFF_SIM_TARRIFS_PAGE="https://www.tinkoff.ru/mobile-operator/tariffs/";
+/*
     //CSS rewrite
     @Test
     public void firstTest(){
-        driver.get(TINKOFF_SIM_TARRIFS_PAGE);
+        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
 
         textInput.sendKeys(driver.findElement(By.cssSelector("input[name='fio']")),"Иван Иван Иван");
         if (!textInput.getElementString(driver.findElement
@@ -43,33 +35,24 @@ private static final TINKOFF_SIM_TARRIFS_PAGE="https://www.tinkoff.ru/mobile-ope
         driver.findElement(By.cssSelector("svg.ui-icon__svg-wrapper")).click();
     }
 
-    @Test
-    public void testRegionSelect() {
-        driver.get(TINKOFF_SIM_TARRIFS_PAGE);
-        driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Да'])[1]/following::span[1]")).click();
-        driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Выберите регион'])[1]/following::input[1]")).click();
-        driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Город'])[1]/following::div[5]")).click();
-    }
+ */
 
     @Test
     public void testFioHint() {
-        driver.get(TINKOFF_SIM_TARRIFS_PAGE);
-        textInput.sendKeys(driver.findElement
-                        (By.cssSelector("input[name='fio'")),Keys.chord(Keys.ENTER));
+        TinkoffSimOfferPage tinkoffSimOfferPage = app.tinkoffSimOfferPage;
 
-        if (xpath("//div[contains(@class, 'app-form-step__fio-field')]" +
-                "//div[contains(@class, 'ui-form-field-error-message')]").getText()
-                .equals("Укажите ваше ФИО")){
-            driver.close();
-        }
-        else {
-            fail("Hints do not equal");
-        }
+        tinkoffSimOfferPage.open();
+
+        tinkoffSimOfferPage.printFioField("");
+
+        tinkoffSimOfferPage.hintFioEquality("Укажите ваше ФИО");
+
+        tinkoffSimOfferPage.closeCurrentTab();
     }
-
+/*
     @Test
     public void testPhoneHint() {
-        driver.get(TINKOFF_SIM_TARRIFS_PAGE);
+        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
         textInput.sendKeys(driver.findElement
                 (By.cssSelector("input[name='phone_mobile'")),Keys.chord(Keys.ENTER));
 
@@ -85,7 +68,7 @@ private static final TINKOFF_SIM_TARRIFS_PAGE="https://www.tinkoff.ru/mobile-ope
 
     @Test
     public void testEmailHint() {
-        driver.get(TINKOFF_SIM_TARRIFS_PAGE);
+        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
 
         textInput.sendKeys(driver.findElement
                 (By.cssSelector("input[name='email'")),"gg" + Keys.chord(Keys.ENTER));
@@ -128,7 +111,7 @@ private static final TINKOFF_SIM_TARRIFS_PAGE="https://www.tinkoff.ru/mobile-ope
 
             driver.switchTo().window(tabs.get(1));
 
-            driver.get(TINKOFF_SIM_TARRIFS_PAGE);
+            driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
 
             if ("Тарифы Тинькофф Мобайла".equals(driver.getTitle())) {
 
@@ -138,7 +121,7 @@ private static final TINKOFF_SIM_TARRIFS_PAGE="https://www.tinkoff.ru/mobile-ope
 
                 driver.switchTo().window(tabs.get(1));
 
-                if (!TINKOFF_SIM_TARRIFS_PAGE.equals(driver.getCurrentUrl())) {
+                if (!"https://www.tinkoff.ru/mobile-operator/tariffs/".equals(driver.getCurrentUrl())) {
                     fail("Urls aren't equal");
                 }
             }
@@ -153,7 +136,7 @@ private static final TINKOFF_SIM_TARRIFS_PAGE="https://www.tinkoff.ru/mobile-ope
     @Test
 
     public void regionChange(){
-        driver.get(TINKOFF_SIM_TARRIFS_PAGE);
+        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
 
         if (xpath("//div[contains(@class,'MvnoRegionConfirmation__title')]")
                 .isDisplayed())
@@ -178,7 +161,7 @@ private static final TINKOFF_SIM_TARRIFS_PAGE="https://www.tinkoff.ru/mobile-ope
         String regionName = xpath("//div[contains(@class,'MvnoRegionConfirmation__title')]")
                 .getText();
 
-        driver.get(TINKOFF_SIM_TARRIFS_PAGE);
+        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
 
         String newRegionName = xpath("//div[contains(@class,'MvnoRegionConfirmation__title')]")
                 .getText();
@@ -278,7 +261,7 @@ private static final TINKOFF_SIM_TARRIFS_PAGE="https://www.tinkoff.ru/mobile-ope
     @Test
     public void zeroTariffDelivery() {
 
-        driver.get(TINKOFF_SIM_TARRIFS_PAGE);
+        driver.get("https://www.tinkoff.ru/mobile-operator/tariffs/");
 
         if (xpath("//div[contains(@class,'MvnoRegionConfirmation__title')]").isDisplayed())
         {
@@ -372,4 +355,5 @@ private static final TINKOFF_SIM_TARRIFS_PAGE="https://www.tinkoff.ru/mobile-ope
         }
         return count;
     }
+    */
 }
