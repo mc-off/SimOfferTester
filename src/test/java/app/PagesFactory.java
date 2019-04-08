@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 
 
-public class pagesFactory {
+public class PagesFactory {
 
     public WebDriverWait wait;
     private WebDriver driver;
@@ -24,7 +24,7 @@ public class pagesFactory {
     public String downloadPath = System.getProperty("path");
 
 
-    public pagesFactory(){
+    public PagesFactory(){
         getDownloadPath();
         //driver
         driver = new EventFiringWebDriver(getDriver());

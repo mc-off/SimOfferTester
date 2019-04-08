@@ -1,14 +1,13 @@
 package test;
 
-import app.pagesFactory;
-import org.junit.After;
+import app.PagesFactory;
 import org.junit.AfterClass;
 import org.junit.Before;
 
 public class BaseRunner {
 
-    private  static ThreadLocal<pagesFactory> threadLocalPagesFactory = new ThreadLocal<>();
-    static pagesFactory pagesFactory;
+    private  static ThreadLocal<PagesFactory> threadLocalPagesFactory = new ThreadLocal<>();
+    static PagesFactory pagesFactory;
 
     @Before
     public void start() {
@@ -16,14 +15,14 @@ public class BaseRunner {
             pagesFactory = threadLocalPagesFactory.get();
             return;
         }
-        pagesFactory = new pagesFactory();
+        pagesFactory = new PagesFactory();
         threadLocalPagesFactory.set(pagesFactory);
     }
 
     //Для единичных прогонов тестов
     /*@After
     public void close(){
-        pagesFactory.quit();
+        PagesFactory.quit();
 
     }*/
 
