@@ -129,12 +129,6 @@ public class TinkoffSimOfferPage extends Page {
         textInput.sendKeys(inputField,testString +  Keys.chord(Keys.ENTER));
     }
 
-    public void testForLoading(){
-        logger.info("Test for loading");
-        wait.until(ExpectedConditions.elementToBeClickable(xpathWebElement("//input[contains(@name,'fio')]")))
-                .isDisplayed();
-    }
-
     private String getFirstRegionTitle(){
         wait
                 .until(ExpectedConditions.visibilityOf(xpathWebElement("//div[contains(@class,'MvnoRegionConfirmation__title')]")));

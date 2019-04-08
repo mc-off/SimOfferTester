@@ -14,7 +14,7 @@ import java.io.IOException;
 public class TestList extends BaseRunner {
     @Test
     public void testFioHint() {
-        TinkoffSimOfferPage tinkoffSimOfferPage = app.tinkoffSimOfferPage;
+        TinkoffSimOfferPage tinkoffSimOfferPage = pagesFactory.tinkoffSimOfferPage;
 
         tinkoffSimOfferPage.open();
 
@@ -27,7 +27,7 @@ public class TestList extends BaseRunner {
 
     @Test
     public void testPhoneHint() {
-        TinkoffSimOfferPage tinkoffSimOfferPage = app.tinkoffSimOfferPage;
+        TinkoffSimOfferPage tinkoffSimOfferPage = pagesFactory.tinkoffSimOfferPage;
 
         tinkoffSimOfferPage.open();
 
@@ -41,7 +41,7 @@ public class TestList extends BaseRunner {
     @Test
     public void testEmailHint() {
 
-        TinkoffSimOfferPage tinkoffSimOfferPage = app.tinkoffSimOfferPage;
+        TinkoffSimOfferPage tinkoffSimOfferPage = pagesFactory.tinkoffSimOfferPage;
 
         tinkoffSimOfferPage.open();
 
@@ -56,25 +56,23 @@ public class TestList extends BaseRunner {
     @Test
     public void testGoogleSearch() {
 
-        GoogleMainPage googleMainPage = app.googleMainPage;
+        GoogleMainPage googleMainPage = pagesFactory.googleMainPage;
         googleMainPage.open();
 
         googleMainPage.openSearchResultsPageByRequest("тинькофф мобайл тарифы");
 
-        GoogleResultPage googleResultPage = app.googleResults;
+        GoogleResultPage googleResultPage = pagesFactory.googleResults;
         googleResultPage.clickSearchResultsByLinkContains("https://www.tinkoff.ru/mobile-operator/tariffs/");
 
-        TinkoffSimOfferPage tinkoffSimOfferPage = app.tinkoffSimOfferPage;
+        TinkoffSimOfferPage tinkoffSimOfferPage = pagesFactory.tinkoffSimOfferPage;
 
         tinkoffSimOfferPage.switchToWindow("Тарифы Тинькофф Мобайла");
 
-        tinkoffSimOfferPage.testForLoading();
-
-        tinkoffSimOfferPage.isLoadedByTitleContains("Тарифы Тинькофф Мобайла");
-
-        tinkoffSimOfferPage.switchToWindow("тинькофф мобайл тарифы - Поиск в Google");
-
+        if (tinkoffSimOfferPage.isLoadedByTitleContains("Тарифы Тинькофф Мобайла"))
+            tinkoffSimOfferPage.switchToMainTab();
         googleResultPage.closeCurrentTab();
+
+        tinkoffSimOfferPage.switchToWindow("Тарифы Тинькофф Мобайла");
 
         if (tinkoffSimOfferPage.isLoadedByTitleContains("Тарифы Тинькофф Мобайла")) {
 
@@ -88,7 +86,7 @@ public class TestList extends BaseRunner {
     @Test
 
     public void regionChange() {
-        TinkoffSimOfferPage tinkoffSimOfferPage = app.tinkoffSimOfferPage;
+        TinkoffSimOfferPage tinkoffSimOfferPage = pagesFactory.tinkoffSimOfferPage;
 
         tinkoffSimOfferPage.open();
 
@@ -130,7 +128,7 @@ public class TestList extends BaseRunner {
 
     @Test
     public void zeroTariffDelivery() {
-        TinkoffSimOfferPage tinkoffSimOfferPage = app.tinkoffSimOfferPage;
+        TinkoffSimOfferPage tinkoffSimOfferPage = pagesFactory.tinkoffSimOfferPage;
         tinkoffSimOfferPage.open();
 
         if (tinkoffSimOfferPage.isFirstRegionMoscow()) {
@@ -167,14 +165,14 @@ public class TestList extends BaseRunner {
     @Test
     public void fileDownload() {
         try {
-            TinkoffSimDocumentationPage tinkoffSimDocumentationPage = app.tinkoffSimDocumentationPage;
+            TinkoffSimDocumentationPage tinkoffSimDocumentationPage = pagesFactory.tinkoffSimDocumentationPage;
             Counter counter = new Counter();
             tinkoffSimDocumentationPage.open();
-            long numberOfFilesBefore = counter.numberOfFilesInDirectory(app.downloadPath);
+            long numberOfFilesBefore = counter.numberOfFilesInDirectory(pagesFactory.downloadPath);
 
             tinkoffSimDocumentationPage.downloadAndWaitTillFileDownloading();
 
-            long numberOfFilesAfter = counter.numberOfFilesInDirectory(app.downloadPath);
+            long numberOfFilesAfter = counter.numberOfFilesInDirectory(pagesFactory.downloadPath);
             if (numberOfFilesAfter == numberOfFilesBefore)
                 tinkoffSimDocumentationPage.closeCurrentTab();
         } catch (IOException e) {

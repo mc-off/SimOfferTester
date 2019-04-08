@@ -1,26 +1,35 @@
 package test;
 
-import app.Application;
+import app.pagesFactory;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 
 public class BaseRunner {
 
-    private  static ThreadLocal<Application> tlApp = new ThreadLocal<>();
-    Application app;
+    private  static ThreadLocal<pagesFactory> threadLocalPagesFactory = new ThreadLocal<>();
+    static pagesFactory pagesFactory;
 
     @Before
     public void start() {
-        if (tlApp.get() != null) {
-            app = tlApp.get();
+        if (threadLocalPagesFactory.get() != null) {
+            pagesFactory = threadLocalPagesFactory.get();
             return;
         }
-        app = new Application();
-        tlApp.set(app);
+        pagesFactory = new pagesFactory();
+        threadLocalPagesFactory.set(pagesFactory);
     }
 
-    @After
-    public void tearDown() {
-        app.quit();
+    //Для единичных прогонов тестов
+    /*@After
+    public void close(){
+        pagesFactory.quit();
+        threadLocalPagesFactory.remove();
+    }*/
+
+    @AfterClass
+    public static void tearDown() {
+        pagesFactory.quit();
     }
+
 }
