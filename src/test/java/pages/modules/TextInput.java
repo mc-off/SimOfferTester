@@ -1,4 +1,4 @@
-package modules;
+package pages.modules;
 
 import org.openqa.selenium.*;
 

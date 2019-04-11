@@ -3,6 +3,7 @@ package test;
 
 import functions.Counter;
 import org.junit.*;
+import static org.junit.Assert.*;
 import pages.GoogleMainPage;
 import pages.GoogleResultPage;
 import pages.TinkoffSimDocumentationPage;
@@ -20,7 +21,7 @@ public class TestList extends BaseRunner {
 
         tinkoffSimOfferPage.printFioField("");
 
-        tinkoffSimOfferPage.hintFioEquality("Укажите ваше ФИО");
+        assertEquals(tinkoffSimOfferPage.getFioHint(), "Укажите ваше ФИО");
     }
 
     @Test
@@ -31,7 +32,7 @@ public class TestList extends BaseRunner {
 
         tinkoffSimOfferPage.printPhoneField("");
 
-        tinkoffSimOfferPage.hintPhoneEquality("Необходимо указать номер телефона");
+        assertEquals(tinkoffSimOfferPage.getPhoneHint(),"Необходимо указать номер телефона");
     }
 
     @Test
@@ -43,7 +44,7 @@ public class TestList extends BaseRunner {
 
         tinkoffSimOfferPage.printEmailField("godEmail");
 
-        tinkoffSimOfferPage.hintEmailEquality("Введите корректный адрес эл. почты");
+        assertEquals(tinkoffSimOfferPage.getEmailHint() , "Введите корректный адрес эл. почты");
     }
 
     @Test
@@ -61,16 +62,18 @@ public class TestList extends BaseRunner {
 
         tinkoffSimOfferPage.switchToWindow("Тарифы Тинькофф Мобайла");
 
-        if (tinkoffSimOfferPage.isLoadedByTitleContains("Тарифы Тинькофф Мобайла"))
-            tinkoffSimOfferPage.switchToMainTab();
+        assertTrue(tinkoffSimOfferPage.isLoadedByTitleContains("Тарифы Тинькофф Мобайла"));
+
+        tinkoffSimOfferPage.switchToMainTab();
+
         googleResultPage.closeCurrentTab();
 
         tinkoffSimOfferPage.switchToWindow("Тарифы Тинькофф Мобайла");
 
-        if (tinkoffSimOfferPage.isLoadedByTitleContains("Тарифы Тинькофф Мобайла")) {
+        assertTrue(tinkoffSimOfferPage.isLoadedByTitleContains("Тарифы Тинькофф Мобайла"));
 
-            tinkoffSimOfferPage.isLoadedByUrlContains("https://www.tinkoff.ru/mobile-operator/tariffs/");
-        }
+        assertTrue(tinkoffSimOfferPage.isLoadedByUrlContains("https://www.tinkoff.ru/mobile-operator/tariffs/"));
+
     }
 
     @Test
@@ -95,32 +98,34 @@ public class TestList extends BaseRunner {
             }
         }
 
-        tinkoffSimOfferPage.open();
+        tinkoffSimOfferPage.refresh();
 
-        if (tinkoffSimOfferPage.isRegionEqualToTestRegion("Москва")) {
-            String moscowDefault = tinkoffSimOfferPage.getTariffPrice();
+        assertTrue(tinkoffSimOfferPage.isRegionEqualToTestRegion("Москва"));
 
-            tinkoffSimOfferPage.setInternetProperty("Безлимитный интернет");
-            tinkoffSimOfferPage.setPhoneProperty("Безлимитные минуты");
-            tinkoffSimOfferPage.setCheckBoxEnabled("Режим модема");
-            tinkoffSimOfferPage.setCheckBoxEnabled("Безлимитные СМС");
+        String moscowDefault = tinkoffSimOfferPage.getTariffPrice();
 
-            String moscowMax = tinkoffSimOfferPage.getTariffPrice();
+        tinkoffSimOfferPage.setInternetProperty("Безлимитный интернет");
+        tinkoffSimOfferPage.setPhoneProperty("Безлимитные минуты");
+        tinkoffSimOfferPage.setCheckBoxEnabled("Режим модема");
+        tinkoffSimOfferPage.setCheckBoxEnabled("Безлимитные СМС");
 
-            tinkoffSimOfferPage.openRegionSelectList();
-            tinkoffSimOfferPage.selectRegionFromList("Краснодарский");
+        String moscowMax = tinkoffSimOfferPage.getTariffPrice();
 
-            String krasnodarDefault = tinkoffSimOfferPage.getTariffPrice();
+        tinkoffSimOfferPage.openRegionSelectList();
+        tinkoffSimOfferPage.selectRegionFromList("Краснодарский");
 
-            tinkoffSimOfferPage.setInternetProperty("Безлимитный интернет");
-            tinkoffSimOfferPage.setPhoneProperty("Безлимитные минуты");
-            tinkoffSimOfferPage.setCheckBoxEnabled("Режим модема");
-            tinkoffSimOfferPage.setCheckBoxEnabled("Безлимитные СМС");
+        String krasnodarDefault = tinkoffSimOfferPage.getTariffPrice();
 
-            String krasnodarMax = tinkoffSimOfferPage.getTariffPrice();
+        tinkoffSimOfferPage.setInternetProperty("Безлимитный интернет");
+        tinkoffSimOfferPage.setPhoneProperty("Безлимитные минуты");
+        tinkoffSimOfferPage.setCheckBoxEnabled("Режим модема");
+        tinkoffSimOfferPage.setCheckBoxEnabled("Безлимитные СМС");
 
-            tinkoffSimOfferPage.equalityOfTariffPrices((!moscowDefault.equals(krasnodarDefault)),(moscowMax.equals(krasnodarMax)));
-        }
+        String krasnodarMax = tinkoffSimOfferPage.getTariffPrice();
+
+        assertNotEquals(moscowDefault, krasnodarDefault);
+
+        assertEquals(moscowMax, krasnodarMax);
     }
 
     @Test
@@ -155,7 +160,7 @@ public class TestList extends BaseRunner {
         tinkoffSimOfferPage.printStreetField("ул Дунайская");
         tinkoffSimOfferPage.printBuildingField("1");
 
-        tinkoffSimOfferPage.isOrderButtonClickabe();
+        assertTrue(tinkoffSimOfferPage.isOrderButtonClickabe());
     }
 
    @Test
@@ -169,7 +174,8 @@ public class TestList extends BaseRunner {
             tinkoffSimDocumentationPage.downloadAndWaitTillFileDownloading();
 
             long numberOfFilesAfter = counter.numberOfFilesInDirectory(pagesFactory.downloadPath);
-            tinkoffSimDocumentationPage.equalityOfFilesInFolder(numberOfFilesBefore,numberOfFilesAfter);
+
+            assertTrue(tinkoffSimDocumentationPage.equalityOfFilesInFolder(numberOfFilesBefore,numberOfFilesAfter));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e){

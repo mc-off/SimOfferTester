@@ -21,6 +21,10 @@ public class Page {
         wait = new WebDriverWait(driver, 10);
     }
 
+    public void refresh(){
+        driver.navigate().refresh();
+    }
+
     public boolean isLoadedByTitleContains(String substring) {
         wait.until(d -> driver.getTitle().contains(substring));
         return true;

@@ -1,8 +1,8 @@
 package pages;
 
-import modules.CheckBox;
-import modules.Select;
-import modules.TextInput;
+import pages.modules.CheckBox;
+import pages.modules.Select;
+import pages.modules.TextInput;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -35,15 +35,9 @@ public class TinkoffSimOfferPage extends Page {
                 });
     }
 
-    public void hintFioEquality(String hintString) {
-        if (xpathWebElement("//div[contains(@class, 'app-form-step__fio-field')]" +
-                "//div[contains(@class, 'ui-form-field-error-message')]").getText()
-                .equals(hintString)) {
-            logger.info("Fio hint equal to " + hintString);
-        }
-        else {
-            logger.error("Fio hint does not equal to " + hintString);
-        }
+    public String getFioHint() {
+        return xpathWebElement("//div[contains(@class, 'app-form-step__fio-field')]" +
+                "//div[contains(@class, 'ui-form-field-error-message')]").getText();
     }
 
     public void printEmailField(String testString) {
@@ -57,19 +51,9 @@ public class TinkoffSimOfferPage extends Page {
 
     }
 
-    public void hintEmailEquality(String hintString) {
-        wait.until(d -> {
-            boolean match = false;
-            System.out.println(xpathWebElement("//div[contains(@class,'ui-form__row_dropdownSuggest')]" +
-                    "//div[contains(@class, 'ui-form-field-error-message')]").getText());
-            if (xpathWebElement("//div[contains(@class,'ui-form__row_dropdownSuggest')]" +
-                    "//div[contains(@class, 'ui-form-field-error-message')]").getText()
-                    .equals(hintString)) {
-                logger.info("Email hint equal to " + hintString);
-                match = true;
-            }
-            return match;
-        });
+    public String getEmailHint() {
+        return xpathWebElement("//div[contains(@class,'ui-form__row_dropdownSuggest')]" +
+                    "//div[contains(@class, 'ui-form-field-error-message')]").getText();
     }
 
     public void printPhoneField(String testString) {
@@ -83,19 +67,9 @@ public class TinkoffSimOfferPage extends Page {
 
     }
 
-    public void hintPhoneEquality(String hintString) {
-        wait.until(d -> {
-            boolean match = false;
-            if (xpathWebElement("//div[contains(@class, 'ui-form__row ui-form__row_tel')]" +
-                    "//div[contains(@class, 'ui-form-field-error-message')]").getText()
-                    .equals(hintString)) {
-                logger.info("Phone hint equal to " + hintString);
-                match = true;
-            } else {
-                logger.error("Phone hint does not equal to " + hintString);
-            }
-            return match;
-        });
+    public String getPhoneHint() {
+       return xpathWebElement("//div[contains(@class, 'ui-form__row ui-form__row_tel')]" +
+                    "//div[contains(@class, 'ui-form-field-error-message')]").getText();
     }
 
     public void printPostcodeField(String testString) {
@@ -198,13 +172,6 @@ public class TinkoffSimOfferPage extends Page {
                 "and contains(text(),'"+phoneProperty+"')]"))
                 .equals(phoneProperty))
             logger.error("Не удается установить макс значение в списке выбора минут звонков");
-    }
-
-    public void equalityOfTariffPrices(Boolean firstPair, Boolean secondPair){
-        wait
-                .until(d -> {
-                    return (firstPair==secondPair);
-                });
     }
 
     public void setCheckBoxEnabled(String checkBoxLabel){
