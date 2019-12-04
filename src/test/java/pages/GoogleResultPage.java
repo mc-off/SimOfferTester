@@ -10,7 +10,8 @@ public class GoogleResultPage extends Page {
     }
 
     public void clickSearchResultsByLinkContains(String link){
-        wait.until(d -> xpathSearcherByText(link).size() > 0);
-        xpathSearcherByText(link).get(0).click();
+        wait.until(d ->
+                xpathSearcherByHref(link).size() > 0);
+        xpathSearcherByHref(link).get(0).click();
     }
 }

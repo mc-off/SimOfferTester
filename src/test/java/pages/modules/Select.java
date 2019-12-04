@@ -10,7 +10,7 @@ public class Select {
 
     public WebElement chooseVariantFromList(String testString) {
         openList(webElement);
-        return webElement.findElement(By.xpath("//span[text()='"+testString+"']"));
+        return webElement.findElement(By.xpath("//div[text()='"+testString+"']"));
     }
 
 

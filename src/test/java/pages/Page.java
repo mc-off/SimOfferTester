@@ -26,12 +26,12 @@ public class Page {
     }
 
     public boolean isLoadedByTitleContains(String substring) {
-        wait.until(d -> driver.getTitle().contains(substring));
+        wait.until(d -> driver.getTitle().equals(substring));
         return true;
     }
 
     public boolean isLoadedByUrlContains(String substring) {
-        wait.until(d -> driver.getCurrentUrl().contains(substring));
+        wait.until(d -> driver.getCurrentUrl().equals(substring));
         return true;
     }
 
@@ -41,7 +41,9 @@ public class Page {
             for (String title : driver.getWindowHandles()) {
                 driver.switchTo().window(title);
                 System.out.println(d.getTitle());
-                check = d.getTitle().contains(windowName);
+                check = d.getTitle().equals(windowName);
+                if (check)
+                    break;
             }
             return check;
         });
@@ -57,6 +59,11 @@ public class Page {
     }
     public List<WebElement> xpathSearcherByText(String searchText) {
         String xpath = String.format("//*[contains(text(),'%s')]", searchText);
+        return driver.findElements(By.xpath(xpath));
+    }
+
+    public List<WebElement> xpathSearcherByHref(String searchText) {
+        String xpath = String.format("//*[contains(@href,'%s')]", searchText);
         return driver.findElements(By.xpath(xpath));
     }
 

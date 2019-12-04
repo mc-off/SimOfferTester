@@ -27,7 +27,7 @@ public class TinkoffSimOfferPage extends Page {
                 .until(d -> {
                         WebElement inputField = xpathWebElement("//input[contains(@name,'fio')]");
         TextInput textInput = new TextInput();
-        textInput.sendKeys(inputField,testString +  Keys.chord(Keys.ENTER));
+        textInput.sendKeys(inputField,testString +  Keys.chord(Keys.TAB));
                     if (!textInput.getElementString(inputField).equals(testString)){
                         logger.error("Значение в поле ФИО не соответствует изначально положенному " + testString);
                     }
@@ -36,31 +36,25 @@ public class TinkoffSimOfferPage extends Page {
     }
 
     public String getFioHint() {
-        return xpathWebElement("//div[contains(@class, 'app-form-step__fio-field')]" +
-                "//div[contains(@class, 'ui-form-field-error-message')]").getText();
+        return xpathWebElement("//div[contains(@class, 'Error__errorMessage')]").getText();
     }
 
     public void printEmailField(String testString) {
         logger.info("Ввожу в поле ФИО текст " +  testString);
-        WebElement inputField = xpathWebElement("//input[@name='email']");
+        WebElement inputField = xpathWebElement("//input[@name='temp_email']");
         TextInput textInput = new TextInput();
-        textInput.sendKeys(inputField,testString +  Keys.chord(Keys.ENTER));
+        textInput.sendKeys(inputField,testString +  Keys.chord(Keys.TAB));
         if (!textInput.getElementString(inputField).equals(testString)){
             logger.error("Значение в поле Email не соответствует изначально положенному " + testString);
         }
 
     }
 
-    public String getEmailHint() {
-        return xpathWebElement("//div[contains(@class,'ui-form__row_dropdownSuggest')]" +
-                    "//div[contains(@class, 'ui-form-field-error-message')]").getText();
-    }
-
     public void printPhoneField(String testString) {
         logger.info("Ввожу в поле Phone текст " +  testString);
         WebElement inputField = xpathWebElement("//input[@name='phone_mobile']");
         TextInput textInput = new TextInput();
-        textInput.sendKeys(inputField,testString +  Keys.chord(Keys.ENTER));
+        textInput.sendKeys(inputField,testString +  Keys.chord(Keys.TAB));
         if (!textInput.getElementString(inputField).equals("+7(" +testString)){
             logger.error("Значение в поле Phone не соответствует изначально положенному " + testString);
         }
@@ -68,13 +62,12 @@ public class TinkoffSimOfferPage extends Page {
     }
 
     public String getPhoneHint() {
-       return xpathWebElement("//div[contains(@class, 'ui-form__row ui-form__row_tel')]" +
-                    "//div[contains(@class, 'ui-form-field-error-message')]").getText();
+       return xpathWebElement("//div[contains(@class, 'Error__errorMessage')]").getText();
     }
 
     public void printPostcodeField(String testString) {
         logger.info("Ввожу в поле Postcode текст " +  testString);
-        WebElement inputField = xpathWebElement("//input[contains(@name,'postal_code')]");
+        WebElement inputField = xpathWebElement("//input[contains(@name,'address_postalCode_manual')]");
         TextInput textInput = new TextInput();
         textInput.sendKeys(inputField,testString);
 
@@ -82,8 +75,8 @@ public class TinkoffSimOfferPage extends Page {
 
     public void printAreaField(String testString) {
         logger.info("Ввожу в поле Area текст " +  testString);
-        driver.findElement(By.name("area")).click();
-        WebElement inputField = driver.findElement(By.name("area"));
+        driver.findElement(By.name("address_region_manual")).click();
+        WebElement inputField = driver.findElement(By.name("address_region_manual"));
         TextInput textInput = new TextInput();
         textInput.sendKeys(inputField,testString);
 
@@ -91,16 +84,16 @@ public class TinkoffSimOfferPage extends Page {
 
     public void printStreetField(String testString) {
         logger.info("Ввожу в поле Street текст " +  testString);
-        WebElement inputField = driver.findElement(By.name("street"));
+        WebElement inputField = driver.findElement(By.name("address_street_manual"));
         TextInput textInput = new TextInput();
         textInput.sendKeys(inputField,testString);
     }
 
     public void printBuildingField(String testString) {
         logger.info("Ввожу в поле Building текст " +  testString);
-        WebElement inputField = xpathWebElement("//input[contains(@name,'building')]");
+        WebElement inputField = xpathWebElement("//input[contains(@name,'address_house_manual')]");
         TextInput textInput = new TextInput();
-        textInput.sendKeys(inputField,testString +  Keys.chord(Keys.ENTER));
+        textInput.sendKeys(inputField,testString +  Keys.chord(Keys.TAB));
     }
 
     private String getFirstRegionTitle(){
@@ -123,8 +116,8 @@ public class TinkoffSimOfferPage extends Page {
 
     public void selectRegionFromList(String regionName) {
         logger.info("Выбираю регион " + regionName + " из списка");
-        xpathWebElement("//div[contains(@class,'MobileOperatorRegionsPopup__listPart')]" +
-                "//div[contains(text(),'" +regionName+"')]")
+        xpathWebElement("//div[contains(@class,'RegionsPopup')]" +
+                "//p[contains(text(),'" +regionName+"')]")
                 .click();
     }
 
@@ -145,8 +138,8 @@ public class TinkoffSimOfferPage extends Page {
         }
     }
     public String getTariffPrice(){
-        String price = xpathWebElement("//div[@data-qa-file='MobileOperatorProductCalculator']" +
-                "//h3")
+        String price = xpathWebElement("//div[contains(@class,'TotalPriceTitle')]" +
+                "//span[1]")
                 .getText();
         logger.info("Цена тарифа " + price);
         return  price;
@@ -155,10 +148,10 @@ public class TinkoffSimOfferPage extends Page {
     public void setInternetProperty(String internetProperty){
         logger.info("Устанавливаю в поле значения интернет трафика значение "+internetProperty);
         Select select = new Select();
-        select.setWebElement(xpathWebElement("//span[.='Интернет']"));
+        select.setWebElement(xpathWebElement("//div[@name='calculator_internet']//div[contains(@class,'SelectedOption__value')]"));
         select.chooseVariantFromList(internetProperty).click();
-        if (!select.takeListValue(xpathWebElement("//span[contains(@class,'ui-select__title-flex-text')" +
-                "and contains(text(),'"+internetProperty+"')]"))
+        if (!select.takeListValue(xpathWebElement("//div[@name='calculator_internet']" +
+                "//div[contains(@class,'SelectedOption__value')]"))
                 .equals(internetProperty))
             logger.error("Не удается установить макс значение в списке выбора ГБ интернета");
     }
@@ -166,10 +159,11 @@ public class TinkoffSimOfferPage extends Page {
     public void setPhoneProperty(String phoneProperty){
         logger.info("Устанавливаю в поле значения минус звонков значение "+phoneProperty);
         Select select = new Select();
-        select.setWebElement(xpathWebElement("//span[.='Звонки']"));
+        select.setWebElement(xpathWebElement("//div[@name='calculator_calls']" +
+                "//div[contains(@class,'SelectedOption__value')]"));
         select.chooseVariantFromList(phoneProperty).click();
-        if (!select.takeListValue(xpathWebElement("//span[contains(@class,'ui-select__title-flex-text')" +
-                "and contains(text(),'"+phoneProperty+"')]"))
+        if (!select.takeListValue(xpathWebElement("//div[@name='calculator_calls']" +
+                                "//div[contains(@class,'SelectedOption__value')]"))
                 .equals(phoneProperty))
             logger.error("Не удается установить макс значение в списке выбора минут звонков");
     }
@@ -201,7 +195,7 @@ public class TinkoffSimOfferPage extends Page {
 
     public boolean isOrderButtonClickabe(){
        wait .until(ExpectedConditions
-                .elementToBeClickable(xpathWebElement("//div[contains(@class,'UIAppointmentForm__button')]")));
+                .elementToBeClickable(xpathWebElement("//span[contains(@class,'SubmitButton__title')]")));
        logger.info("проверяю, кликабельна ли кнопка Заказать доставку");
        return true;
     }

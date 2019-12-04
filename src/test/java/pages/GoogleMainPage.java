@@ -33,19 +33,21 @@ public class GoogleMainPage extends Page {
         wait
                 .ignoring(StaleElementReferenceException.class)
                 .withMessage("Что-то не так...")
-                .pollingEvery(Duration.ofMillis(500))
                 .until(d -> {
                     //список поисковой выдачи
                     By listItems = By.xpath("//ul[@role='listbox']/li[@role='presentation' and .//*[@role='option']]");
                     List<WebElement> elements = driver.findElements(listItems);
+
                     for (WebElement el : elements) {
                         System.out.println(el.getText());
                         //из списка вариантов дожиаемся появления нужного, кликаем
-                        if (el.getText().equals(request.toLowerCase())) el.click();
-                        break;
+                        if (el.getText().equals(request.toLowerCase())) {
+                            el.click();
+                            break;
+                        }
                     }
                     //Ожидание появления заголовка
-                    return d.getTitle().contains(request.toLowerCase() + " - Поиск в Google");
+                    return d.getTitle().contains(request.toLowerCase() + " - ");
                 });
     }
 }
